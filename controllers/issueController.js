@@ -69,3 +69,15 @@ exports.deleteIssue = async (req, res) => {
       .json({ message: "Error deleting issue", error: err.message });
   }
 };
+
+// Get all issues
+exports.getAllIssues = async (req, res) => {
+  try {
+    const issues = await Issue.find().populate("assignedTo", "name email");
+    res.status(200).json({ issues });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error fetching issues", error: err.message });
+  }
+};

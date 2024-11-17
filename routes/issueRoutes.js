@@ -20,4 +20,8 @@ router.put("/:id", protect, updateIssue);
 // Delete an issue
 router.delete("/:id", protect, deleteIssue);
 
+//All Issues
+// Get all issues
+router.get("/", protect, getAllIssues);
+
 module.exports = router;

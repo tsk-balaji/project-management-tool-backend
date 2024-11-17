@@ -101,37 +101,44 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// Login User
-// Login User
+//Login
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if the user exists
+    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Ensure the account is active
+    console.log("Login Attempt by User:", user);
+
+    // Check if account is active
     if (!user.isActive) {
       return res
         .status(403)
         .json({ message: "Account not activated. Check your email." });
     }
 
-    // Compare provided password with stored hash
+    // Debug bcrypt.compare
+    console.log("Plain Password:", password);
+    console.log("Hashed Password:", user.password);
+
+    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("bcrypt.compare Result:", isMatch);
+
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    // Generate and send JWT token
+    // Generate JWT token
     const token = generateToken(user._id);
     res.status(200).json({ token });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Login Error:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 

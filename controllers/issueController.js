@@ -74,7 +74,7 @@ exports.deleteIssue = async (req, res) => {
 exports.getAllIssues = async (req, res) => {
   try {
     const issues = await Issue.find().populate("assignedTo", "name email");
-    res.status(200).json({ issues });
+    res.status(200).json(issues);
   } catch (err) {
     res
       .status(500)

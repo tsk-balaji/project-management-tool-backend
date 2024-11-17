@@ -4,6 +4,7 @@ const {
   getIssuesByProject,
   updateIssue,
   deleteIssue,
+  getAllIssues
 } = require("../controllers/issueController");
 const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();

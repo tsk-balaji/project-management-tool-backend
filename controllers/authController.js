@@ -123,6 +123,8 @@ exports.loginUser = async (req, res) => {
 
     // Debug bcrypt.compare
     console.log("Plain Password:", password);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("hashedpasswordGiven : ", hashedPassword);
     console.log("Hashed Password:", user.password);
 
     // Compare passwords
@@ -218,7 +220,6 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-// Reset Password
 // Reset Password
 exports.resetPassword = async (req, res) => {
   try {

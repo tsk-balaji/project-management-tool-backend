@@ -26,7 +26,7 @@ exports.protect = async (req, res, next) => {
 
 // Role-based access control (Admin or Project Manager)
 exports.isAdminOrPM = (req, res, next) => {
-  if (req.user.role === "admin" || req.user.role === "project_manager") {
+  if (req.user.role === "Admin" || req.user.role === "project_manager") {
     next();
   } else {
     res

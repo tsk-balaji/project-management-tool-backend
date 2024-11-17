@@ -126,7 +126,7 @@ exports.loginUser = async (req, res) => {
     console.log("Hashed Password:", user.password);
 
     // Compare passwords
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(String(password), user.password);
     console.log("bcrypt.compare Result:", isMatch);
 
     if (!isMatch) {

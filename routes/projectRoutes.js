@@ -3,6 +3,7 @@ const {
   createProject,
   getProjects,
   updateProject,
+  getSpecificProjects,
   deleteProject,
 } = require("../controllers/projectController");
 const { protect, isAdminOrPM } = require("../middleware/authMiddleware");
@@ -16,6 +17,9 @@ router.get("/", protect, getProjects);
 
 // Update a project (Admin or Project Manager)
 router.put("/:id", protect, isAdminOrPM, updateProject);
+
+//Get a Specific Project.
+router.get("/:id", getSpecificProjects);
 
 // Delete a project (Admin)
 router.delete("/:id", protect, isAdminOrPM, deleteProject);

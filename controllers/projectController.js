@@ -1,21 +1,45 @@
 const Project = require("../models/Project");
 
-// Create a new project
+//Create new project
 exports.createProject = async (req, res) => {
-  const { name, description, startDate, endDate, assignedUsers } = req.body;
+  const { title, description, deadline, assignedUsers } = req.body;
+
+  // Validation: Check required fields
+  if (!title || !deadline) {
+    return res.status(400).json({
+      message: "Validation error",
+      error: "Both `title` and `deadline` are required fields.",
+    });
+  }
+
   try {
+    // Create the project
     const project = await Project.create({
-      name,
+      title,
       description,
-      startDate,
-      endDate,
+      deadline,
       assignedUsers,
     });
-    res.status(201).json({ message: "Project created successfully", project });
+
+    // Success response
+    res.status(201).json({
+      message: "Project created successfully",
+      project,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error creating project", error: err.message });
+    // Distinguish validation errors
+    if (err.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: err.message,
+      });
+    }
+
+    // Handle other errors
+    res.status(500).json({
+      message: "Error creating project",
+      error: err.message,
+    });
   }
 };
 
@@ -48,6 +72,27 @@ exports.updateProject = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error updating project", error: err.message });
+  }
+};
+
+//Get a specfic project
+exports.getSpecificProjects = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Validate and fetch the project
+    const project = await Project.findById(id);
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.status(200).json(project);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching the project", error });
   }
 };
 

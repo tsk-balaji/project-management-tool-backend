@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 
-const ProjectSchema = new mongoose.Schema({
+const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String },
-  category: { type: String },
   deadline: { type: Date, required: true },
+  name: { type: String },
+  description: { type: String },
+  teamMembers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   teamLeader: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   tasks: [{ type: String }],
+  assignedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
-module.exports = mongoose.model("Project", ProjectSchema, "pmt_Project");
+module.exports = mongoose.model("Project", projectSchema, "pmt_Project");

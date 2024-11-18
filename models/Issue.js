@@ -33,6 +33,10 @@ const issueSchema = new mongoose.Schema(
       default: "Medium",
       required: true,
     },
+    dueDate: { 
+      type: Date,
+      required: false, 
+    },
     createdAt: {
       type: Date,
       default: Date.now,

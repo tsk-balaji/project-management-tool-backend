@@ -184,7 +184,7 @@ exports.forgotPassword = async (req, res) => {
     user.resetPasswordExpire = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const resetLink = `https://your-frontend-url.com/reset-password/${resetToken}`;
+    const resetLink = `https://project-management-tool-tsk.netlify.app/reset-password/${resetToken}`;
 
     // Send reset password email
     await transporter.sendMail({
@@ -272,5 +272,25 @@ exports.getAllUsers = async (req, res) => {
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Error fetching users" });
+  }
+};
+
+// Get User Details
+exports.getUserDetails = async (req, res) => {
+  try {
+    // Get the email from the request body (for login)
+    const email = req.body.email || req.params.id; // Make sure to accept the email properly
+
+    // Find user by email and exclude the password field
+    const user = await User.findOne({ email }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ message: "Error fetching user details" });
   }
 };
